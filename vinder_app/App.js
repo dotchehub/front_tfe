@@ -1,71 +1,105 @@
-import * as React from 'react';
-import { ImageBackground,StyleSheet,TextInput,Text, View,Touch,Button,Dimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {useEffect} from 'react'
-import axios from "axios"
-import { useState } from 'react';
-import LoginScreen from './screens/LoginScreen'
+import * as React from "react";
+import { useEffect, useState } from "react";
 
+//👇🏻 app screens
+import Messaging from "./messagerie/Messaging";
+import Chat from "./messagerie/Chat";
 
-const image = require('./images/train.jpeg')
+//👇🏻 React Navigation configurations
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  ImageBackground,
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  Touch,
+  Button,
+  Dimensions,
+} from "react-native";
+import axios from "axios";
+import LoginScreen from "./screens/LoginScreen";
+
+const image = require("./images/train.jpeg");
+
+const Stack = createStackNavigator();
+
+const ChatNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          title: "Chats",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name="Messaging" component={Messaging} />
+    </Stack.Navigator>
+  );
+};
 
 function HomeScreen() {
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
 
   return (
     <View style={styles.container}>
-   <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-
-   </ImageBackground>
- </View>
+      <ImageBackground
+        source={image}
+        resizeMode="cover"
+        style={styles.image}
+      ></ImageBackground>
+    </View>
   );
 }
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Settings</Text>
     </View>
   );
 }
 
 function LoginScreenTab() {
-  const [userName, setUserName] = useState('');
-  const [password,setPassword] =  useState('');
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleRegister = ()=>{
+  const handleRegister = () => {
+    axios
+      .post("https://vinderbe.azurewebsites.net/users", {
+        username: userName,
+        password: password,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
-    axios.post('https://vinderbe.azurewebsites.net/users', {
-    username: userName,
-    password: password
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-  }
-
-  return(
+  return (
     <View style={styles.container}>
       <View>
         <TextInput
-         style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => setUserName(text)}
+          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+          onChangeText={(text) => setUserName(text)}
           placeholder="Username"
         />
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => setPassword(text)}
+          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+          onChangeText={(text) => setPassword(text)}
           placeholder="password"
         />
-        <Button title="Register" onPress={handleRegister}/>
+        <Button title="Register" onPress={handleRegister} />
       </View>
     </View>
-  )
+  );
 }
 
 const Tab = createBottomTabNavigator();
@@ -76,7 +110,12 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="Login" component={LoginScreenTab}/>
+        <Tab.Screen name="Login" component={LoginScreenTab} />
+        <Tab.Screen
+          name="Chats"
+          component={ChatNavigator}
+          options={{ headerShown: false }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -88,7 +127,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "center",
-    alignItems:"center"
+    alignItems: "center",
   },
   text: {
     color: "white",
@@ -96,9 +135,9 @@ const styles = StyleSheet.create({
     lineHeight: 84,
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor: "#000000c0"
+    backgroundColor: "#000000c0",
   },
-  textInput:{
-    borderColor: "black"
-  }
+  textInput: {
+    borderColor: "black",
+  },
 });
