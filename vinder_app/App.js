@@ -17,7 +17,6 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-
    </ImageBackground>
  </View>
   );
@@ -76,7 +75,7 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="Login" component={LoginScreenTab}/>
+        <Tab.Screen name="Login" component={ LoginScreen }/>
       </Tab.Navigator>
     </NavigationContainer>
   );

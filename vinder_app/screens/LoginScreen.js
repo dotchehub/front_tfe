@@ -7,10 +7,7 @@ const LoginScreen = ()=>{
 
    return(
      <View>
-       <TextInput
-         onChangeText={text => setText(text)}
-         placeHolder="Username"
-       />
+       <Text> Login page</Text>
      </View>
    )
 }
