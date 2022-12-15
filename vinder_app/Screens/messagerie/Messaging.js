@@ -35,7 +35,6 @@ const Messaging = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: firstname });
-    getUsername();
     if (id1 == undefined) {
       socket.emit("findRoom", user + "_" + id2);
       console.log("emit findroom " + user + "_" + id2);
@@ -49,6 +48,7 @@ const Messaging = ({ route, navigation }) => {
   // This runs when the messages are updated.
 
   useEffect(() => {
+    getUsername();
     socket.on("foundRoom", (roomChats) => setChatMessages(roomChats));
   }, [socket]);
 

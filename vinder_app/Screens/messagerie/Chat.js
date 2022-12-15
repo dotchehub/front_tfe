@@ -28,6 +28,7 @@ const Chat = () => {
 
       if (value !== null) {
         setUser(value);
+        return value;
       }
     } catch (e) {
       console.error("Error while loading id!");
@@ -36,12 +37,14 @@ const Chat = () => {
   //👇🏻 Runs when the component mounts
   //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
-    getUsername();
     function fetchGroups() {
-      fetch(
-        "https://vinderbe.azurewebsites.net/messages/matchs/" + user,
-        options
-      )
+      getUsername()
+        .then((id) =>
+          fetch(
+            "https://vinderbe.azurewebsites.net/messages/matchs/" + id,
+            options
+          )
+        )
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));
