@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import { EAzureBlobStorageFile } from "react-native-azure-blob-storage";
 
 import LoginName from "./LoginName";
@@ -60,7 +60,8 @@ function MyStack() {
 
   _storeData = async (id, value) => {
     try {
-      await AsyncStorage.setItem(id, value);
+      await AsyncStorage.setItem( id, value);
+      console.log("id : "+  id + " value : " + value);
     } catch (error) {
       // Error saving data
       console.log(error);

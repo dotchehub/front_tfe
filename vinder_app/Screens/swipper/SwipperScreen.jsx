@@ -21,7 +21,7 @@ const getUsername = async () => {
       setMeID(value);
     }
   } catch (e) {
-    console.error("Error while loading id!");
+    console.error(e);
   }
 };
   //Changer pour choper depuis l'asyncstorage
