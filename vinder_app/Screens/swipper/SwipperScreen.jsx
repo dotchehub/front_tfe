@@ -1,53 +1,75 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
-import SwipeableCard from './SwipeableCard';
-import MatchScreen from './MatchScreen';
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import SwipeableCard from "./SwipeableCard";
+import MatchScreen from "./MatchScreen";
+import { likeAUser,dislikeUser } from "../../utils/api";
 
-const SwipperScreen = () => {
-  // get all profile that can i like
+const SwipperScreen = ({navigation}) => {
+  const me = {
+    id:1,
+    firstname:"mehdi",
+    description:"that's my description BTW",
+    images : [
+      "https://blobvinder.blob.core.windows.net/images/1671040576123IMG_0003.jpg"
+    ],
+    birthdate:"2022-03-13T23:00:00.000Z",
+  }
+
+  useLayoutEffect(() => {
+    function fetchProfiles() {
+      fetch(`http://192.168.0.14:3000/users/userstolike/${me.id}`).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+      .catch((err) => console.log(err))
+     
+    }
+    return fetchProfiles();
+  },[]);
+
   const [noMoreCard, setNoMoreCard] = useState(false);
-  // set all profile to sampleCardArray
-  const [sampleCardArray, setSampleCardArray] = useState(DEMO_CONTENT);
-  const [swipeDirection, setSwipeDirection] = useState('');
-  const [match, setNewMatch] = useState(false)
-  let lastSwipDirection = "";
-  const [lastItemSwiped,setLastItemSwiped] = useState();
-  const removeCard = (profile) => {
-    setLastItemSwiped(profile);
+  const [sampleCardArray, setSampleCardArray] = useState([]);
+  const [swipeDirection, setSwipeDirection] = useState("");
+  const [match, setNewMatch] = useState(false);
 
+  const [lastItemSwiped, setLastItemSwiped] = useState();
+  let lastSwipDirection = "";
+
+  const removeCard = async(profile) => {
+    setLastItemSwiped(profile);
     sampleCardArray.splice(
-    sampleCardArray.findIndex((item) => item.id == profile.id),1);
+      sampleCardArray.findIndex((item) => item.id == profile.id),
+      1
+    );
     setSampleCardArray(sampleCardArray);
     if (sampleCardArray.length == 0) {
       setNoMoreCard(true);
     }
-    if (lastSwipDirection==="Right"){
+    if (lastSwipDirection === "Right") {  
       //check if it's a match between the 2 person if yes insert new match
-      setNewMatch(true)      
-      insertNewMatch(profile.id)
-    }else {
+      if (await likeAUser(me.id, profile.id)){
+        setNewMatch(true);
+      }
+    } else {
       // insert in dislike table
+      await dislikeUser(me.id, profile.id)
     }
   };
 
   const lastSwipedDirection = (swip) => {
     setSwipeDirection(swip);
-    lastSwipDirection=swip;
+    lastSwipDirection = swip;
   };
-  const insertNewMatch = (userId) => {
 
-  }
-
-  return (     
-    <View style={{flex:1}}>
-        <View style={styles.container}>
-        {match?
-          <MatchScreen profile={lastItemSwiped} liked={() => setNewMatch(false)} />
-        :""}
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {match ? (
+          <MatchScreen
+          navigation={navigation}
+            profile={lastItemSwiped}
+            liked={() => setNewMatch(false)}
+          />
+        ) : (
+          ""
+        )}
         {sampleCardArray.map((item, key) => (
           <SwipeableCard
             key={key}
@@ -56,287 +78,25 @@ const SwipperScreen = () => {
             swipedDirection={lastSwipedDirection}
           />
         ))}
-      {noMoreCard?
-      <Text>
-        Plus aucune personne disponible autour de vous
-      </Text>
-      :""}
+        {noMoreCard ? (
+          <Text>Plus aucune personne disponible autour de vous</Text>
+        ) : (
+          ""
+        )}
       </View>
-      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    alignItems:"center",
-    justifyContent:"center",
-    paddingLeft:8,
-    paddingRight:8,
-    paddingBottom:20,
-
-},
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingBottom: 20,
+  },
 });
-
-const DEMO_CONTENT = [
-  {
-    id: '1',
-    cardTitle: 'Card 1',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-      ,
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-    ],
-    localisation:"belgique"
-  },
-  {
-    id: '2',
-    cardTitle: 'Card 2',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Belgique"
-
-  },
-  {
-    id: '3',
-    cardTitle: 'Card 3',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Congo"
-  },
-  {
-    id: '4',
-    cardTitle: 'Card 4',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ], localisation:"France"
-  },
-  {
-    id: '5',
-    cardTitle: 'Card 5',
-    images:[
-      {
-        uri:require("../../images/quidam.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],    localisation:"belgique"
-  },
-  {
-    id: '6',
-    cardTitle: 'Card 1',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-      ,
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-    ],
-    localisation:"belgique"
-  },
-  {
-    id: '7',
-    cardTitle: 'Card 2',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Belgique"
-
-  },
-  {
-    id: '8',
-    cardTitle: 'Card 3',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Congo"
-  },
-  {
-    id: '9',
-    cardTitle: 'Card 4',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ], localisation:"France"
-  },
-  {
-    id: '10',
-    cardTitle: 'Card 5',
-    images:[
-      {
-        uri:require("../../images/quidam.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],    localisation:"belgique"
-  },
-  {
-    id: '11',
-    cardTitle: 'Card 1',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-      ,
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      }
-    ],
-    localisation:"belgique"
-  },
-  {
-    id: '12',
-    cardTitle: 'Card 2',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Belgique"
-
-  },
-  {
-    id: '13',
-    cardTitle: 'Card 3',
-    images:[
-      {
-        uri:require("../../images/women.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],
-    localisation:"Congo"
-  },
-  {
-    id: '14',
-    cardTitle: 'Card 4',
-    images:[
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ], localisation:"France"
-  },
-  {
-    id: '15',
-    cardTitle: 'Card 5',
-    images:[
-      {
-        uri:require("../../images/quidam.jpg")
-      },
-      {
-        uri:require("../../images/random_aze.png")
-      },
-      {
-        uri:require("../../images/women.jpg")
-      }
-    ],    localisation:"belgique"
-  },
-].reverse();
 
 export default SwipperScreen;

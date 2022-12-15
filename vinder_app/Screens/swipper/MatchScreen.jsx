@@ -8,11 +8,16 @@ import {
 } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 
-const MatchScreen = ({profile,liked}) => {
+
+const MatchScreen = ({navigation,profile,liked}) => {
+
     const handleContinueClick = () => {
-      liked(profile.id);
+      liked();
     }
-    const handleAddNewMatch = () => {
+    const handleNavigateToMessage = () => {
+      navigation.navigate("Messaging", {
+        id: profile.id,
+    });
     }
 
     return (
@@ -24,7 +29,7 @@ const MatchScreen = ({profile,liked}) => {
                                   {/* CHANGE QUIDAM IMG BY LOCALSTORAGE IMG  */}
         <Image style={styles.matched_images} source={require("../../images/quidam.jpg")}>
         </Image>
-        <Image style={styles.matched_images} source={profile.images[0].uri}>
+        <Image style={styles.matched_images} source={{uri : profile.images[0]}}>
         </Image>
         </View>
         <View style={{ justifyContent:"center",alignItems:"center"}}>
@@ -37,7 +42,7 @@ const MatchScreen = ({profile,liked}) => {
                 </Text>
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleAddNewMatch} >
+          <TouchableOpacity onPress={handleNavigateToMessage} >
             <LinearGradient colors={[ '#84E6F8','#FF4890']}
               start={{x: 0.0, y: 1.0}} end={{x: 1.0, y: 1.0}
               } style={{borderRadius:90}}>
@@ -52,7 +57,7 @@ const MatchScreen = ({profile,liked}) => {
   }
 const styles = StyleSheet.create({
 matched_images:{
-    padding:20,borderRadius:90, maxWidth:80,maxHeight:80
+    padding:20,borderRadius:90, width:80,height:80
 },
 btn_on_match:{
     borderWidth:0.5,borderColor:"white", padding:15,borderRadius:90,color:"white"

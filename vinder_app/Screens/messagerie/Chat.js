@@ -21,7 +21,6 @@ const Chat = () => {
   //👇🏻 Runs when the component mounts
   useLayoutEffect(() => {
     function fetchGroups() {
-    
       fetch("https://vinderbe.azurewebsites.net/messages/api", options)
         .then((res) => res.json())
         .then((data) => setRooms(data))
