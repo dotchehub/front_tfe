@@ -4,7 +4,7 @@ import SwipeableCard from "./SwipeableCard";
 import MatchScreen from "./MatchScreen";
 import { likeAUser,dislikeUser } from "../../utils/api";
 import socket from "../../utils/socket";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 
 
 
@@ -12,35 +12,26 @@ const SwipperScreen = ({navigation}) => {
 
 
 const [meId, setMeID] = useState();
-  
+
 const getUsername = async () => {
   try {
     const value = await AsyncStorage.getItem("id");
-
+    console.log("IDDDDDD :" +value)
     if (value !== null) {
       setMeID(value);
+      return value;
     }
+
   } catch (e) {
     console.error("Error while loading id!");
   }
 };
   //Changer pour choper depuis l'asyncstorage
-  const me = {
-    id: meId,
-    firstname:"mehdi",
-    description:"that's my description BTW",
-    images : [
-      "https://blobvinder.blob.core.windows.net/images/1671040576123IMG_0003.jpg"
-    ],
-    birthdate:"2022-03-13T23:00:00.000Z",
-  }
 
   useLayoutEffect(() => {
-    getUsername();
     function fetchProfiles() {
-      fetch(`https://vinderbe.azurewebsites.net/users/userstolike/${me.id}`).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+      (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/users/userstolike/"+id)).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
       .catch((err) => console.log(err))
-     
     }
     return fetchProfiles();
   },[]);
@@ -63,7 +54,7 @@ const getUsername = async () => {
     if (sampleCardArray.length == 0) {
       setNoMoreCard(true);
     }
-    if (lastSwipDirection === "Right") {  
+    if (lastSwipDirection === "Right") {
       //check if it's a match between the 2 person if yes insert new match
       if (await likeAUser(me.id, profile.id)){
         //Create the chat room witj id : me.id_profile.id
@@ -72,7 +63,7 @@ const getUsername = async () => {
         //Emit event that we matched with someone and he needs to update is ChatRooms
         socket.emit("roomList")
         setNewMatch(true);
-    
+
       }
     } else {
       // insert in dislike table
@@ -86,7 +77,7 @@ const getUsername = async () => {
   };
 
 
-  return ( 
+  return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         {match ? (
