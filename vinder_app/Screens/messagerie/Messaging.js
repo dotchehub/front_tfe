@@ -16,7 +16,7 @@ const Messaging = ({ route, navigation }) => {
   const [message, setMessage] = useState("");
 
   //A CHANGER POUR CHOPER LE BON USERNAME
-  const [user, setUser] = useState(20);
+  const [user, setUser] = useState(10);
 
   // This function gets the username saved on AsyncStorage
 
