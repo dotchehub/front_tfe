@@ -31,11 +31,11 @@ const Messaging = ({ route, navigation }) => {
       console.error("Error while loading username!");
     }
   };
-
   // This runs only initial mount
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: firstname });
+    getUsername();
     if (id1 == undefined) {
       socket.emit("findRoom", user + "_" + id2);
       console.log("emit findroom " + user + "_" + id2);
