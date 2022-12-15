@@ -3,23 +3,18 @@ import { StyleSheet, Text, View,ImageBackground  } from 'react-native';
 import MapScreen from '../login/MapScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useState, useLayoutEffect, useEffect } from "react";
+import { AsyncStorage } from 'react-native';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import SwipperScreen from '../swipper/SwipperScreen'
 import ChatNavigator  from '../messagerie/ChatNavigator'
+import Settings from './Settings';
+import axios from 'axios';
 const Tab = createBottomTabNavigator();
-const image = require('../../images/2.jpg');
 const logo = require('../../images/vinder_logo.png');
 
-const Home =()=> {
 
-  function HomeScreen() {
-  return (
-    <View style={styles.container}>
-   <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-   </ImageBackground>
- </View>
-  );
-}
+const Home =()=> {
 
   return (
       <Tab.Navigator>
@@ -56,7 +51,7 @@ const Home =()=> {
 
             <Tab.Screen
               name="Profil"
-              component={HomeScreen} options={{
+              component={Settings} options={{
               tabBarIcon: ({ color, size }) => (
                <MaterialCommunityIcons name="account" size={24} color="black" />
              ),

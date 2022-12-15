@@ -9,10 +9,11 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { AsyncStorage } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const  NotLoggedScreen = ({navigation}) =>{
+const  NotLoggedScreen = ({navigation,setName}) =>{
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
@@ -20,28 +21,43 @@ const  NotLoggedScreen = ({navigation}) =>{
   });
 
   const handleGoogleCLick = async () => {
-    const googleResp = await promptAsync();
-    if (googleResp.type === "success") {
-      let access_token = JSON.stringify(googleResp.params.access_token);
-      const token = "Bearer " + access_token.replace(/['"]+/g, "");
-      const endPoint = "https://www.googleapis.com/userinfo/v2/me";
-
-      const response = await fetch(endPoint, {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
-      const userData = await response.json();
-      // TODO
-      // post userData in the dateBase if not exist
-      // that prevent user to not going back to home page after login
+    const value = await AsyncStorage.getItem("id");
+    if(value){
       navigation.navigate("HomeScreen");
       navigation.reset({
         index: 0,
         routes: [{ name: "HomeScreen" }],
       });
+    }else {
+      const googleResp = await promptAsync();
+      if (googleResp.type === "success") {
+        let access_token = JSON.stringify(googleResp.params.access_token);
+        const token = "Bearer " + access_token.replace(/['"]+/g, "");
+        const endPoint = "https://www.googleapis.com/userinfo/v2/me";
+
+        const response = await fetch(endPoint, {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        });
+        const userData = await response.json();
+
+        console.log(userData);
+        setName(userData.given_name);
+
+        // TODO
+        // post userData in the dateBase if not exist
+        // that prevent user to not going back to home page after login
+        navigation.navigate("Birthday");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Birthday" }],
+        });
+
+      }
     }
+
   };
 
   const handleCreateAccount= ()=>{

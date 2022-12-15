@@ -1,16 +1,17 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Button,TouchableOpacity,TextInput } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
 import CustomInput from './CustomInput'
 import CustomButton from './CustomButton'
 
 
 const LoginName = ({ navigation,name,setName })=>{
   const [valid,setValid] = React.useState(false);
-
+  const [messageError,setMessageError] = React.useState("");
   const onChangeName = (name)=>{
     setName(name);
-    if(name.length>4){
+    if(name.length>2){
       setValid(true);
     }else{
       setValid(false);
@@ -19,7 +20,13 @@ const LoginName = ({ navigation,name,setName })=>{
   const moveNextScreen = ()=>{
 
     //navigation.navigate('NotLoggedScreen');
-    navigation.navigate('Birthday');
+    if(valid){
+        navigation.navigate('Birthday');
+        //navigation.navigate('HomeScreen');
+    }else{
+      setMessageError("Entrez un pénom valide");
+    }
+
     //navigation.navigate('Upload');
     //navigation.navigate('Test');
 
@@ -27,6 +34,7 @@ const LoginName = ({ navigation,name,setName })=>{
   return (
     <View style={styles.container}>
       <Text style={{fontWeight:"bold",fontSize:30,marginBotton:40}}> Quel est votre prénom ?</Text>
+      <Text style={{color:'#35E3FF'}}>{messageError}</Text>
       <CustomInput value={name} onChangeName={onChangeName}/>
       <CustomButton valid={valid} onpress={moveNextScreen} title="CONTINUER"/>
     </View>

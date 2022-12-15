@@ -3,27 +3,25 @@ import { SafeAreaView, StyleSheet, TextInput,View,Text,ScrollView } from "react-
 import UploadImages from './UploadImages'
 import { NavigationContainer } from '@react-navigation/native';
 import CustomButton from './CustomButton';
-import { LinearGradient } from 'expo-linear-gradient';
+
 
 
 const LoginAddImages = ({navigation,register,firstImage, setFirstImage,secondImage, setSecondImage,thirdImage, setThirdImage,fourthImage, setFourthImage,fifthImage, setFifthImage,sixthImage, setSixthImage}) => {
 
   const moveNextScreen =()=>{
     register();
+    navigation.navigate('Loading');
+    /*
     navigation.navigate('HomeScreen');
     navigation.reset({
       index: 0,
       routes: [{ name: "HomeScreen" }],
     });
+    */
   }
 
   return (
       <View style={styles.container}>
-      <LinearGradient
-       // Background Linear Gradient
-       colors={['rgba(0,0,0,0.8)', 'transparent']}
-       style={styles.background}
-     />
         <View style={styles.introduction}>
           <View style={{marginTop:20}}>
               <Text style={{fontWeight:"bold",fontSize:30}}>Mes photos</Text>

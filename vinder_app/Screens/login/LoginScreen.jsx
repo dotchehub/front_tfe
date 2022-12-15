@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 import { EAzureBlobStorageFile } from 'react-native-azure-blob-storage';
 
 import LoginName from './LoginName';
@@ -15,6 +16,7 @@ import UploadOption from './UploadOption'
 import LoginAddImages from './LoginAddImages'
 import MapScreen from './MapScreen'
 import NotLoggedScreen from './NotLoggedScreen'
+import LoadingScreen from '../utils/LoadingScreen'
 
 import Home from '../homepage/Home';
 
@@ -25,6 +27,7 @@ function MyStack() {
   const [name, setName] = useState("");
   const [sexe,setSexe] = useState('');
   const [lokingFor,setLokingFor] = useState('');
+  const [loadingStatus,setLoadingStatus] = useState(false);
   // Images
   const [firstImage, setFirstImage] = useState([]);
   const [secondImage, setSecondImage] = useState([]);
@@ -43,6 +46,22 @@ function MyStack() {
   const onChangeLookingFor = (newLookingFor)=>{
     setLokingFor(newLookingFor);
   }
+
+  function onDateSelected(event, value) {
+    setChosenDate(value);
+  };
+
+  _storeData = async (id,value) => {
+    try {
+      await AsyncStorage.setItem(
+        id,
+        value
+      );
+    } catch (error) {
+      // Error saving data
+      console.log(error);
+    }
+  };
 
   const uploadProfileImg = (idUser)=>{
     let path = "https://vinderbe.azurewebsites.net/users/profile/"+idUser;
@@ -104,7 +123,8 @@ function MyStack() {
 
 
   const register = ()=>{
-
+    let profileImg = "https://blobvinder.blob.core.windows.net/images/"+firstImage[0].fileName;
+    console.log("filename === "+firstImage[0].fileName)
     axios.post('https://vinderbe.azurewebsites.net/users/register', {
       firstname:name,
       birthdate:  chosenDate.getFullYear()+"-"+chosenDate.getDay()+"-"+chosenDate.getDate(),
@@ -112,17 +132,24 @@ function MyStack() {
       description:"my name",
       choice:lokingFor,
       number:"1234",
-      score:0
+      score:0,
+      url:profileImg
     })
     .then(function (response) {
       let userId = response.data.id_user
+      console.log("TRY TO ADD USER : "+response.data);
       uploadAllImages();
       addImagesPath(userId);
-      uploadProfileImg(userId);
+      _storeData("id",""+userId);
+      _storeData("profileImage",profileImg);
+
     })
     .catch(function (error) {
       console.log(error);
     });
+    console.log("Sart LOADING.....")
+
+
   }
 
   return (
@@ -150,7 +177,7 @@ function MyStack() {
             title:"Créer un compte",
             headerShown: false
           }}>
-          {props => <NotLoggedScreen {...props} />}
+          {props => <NotLoggedScreen {...props} setName={nameHandler}/>}
         </Stack.Screen>
 
         <Stack.Screen
@@ -158,7 +185,7 @@ function MyStack() {
           options={{
             title:"Créer un compte"
           }}>
-            {props => <LoginBirthday {...props} setChosenDate={setChosenDate} chosenDate={chosenDate}/>}
+            {props => <LoginBirthday {...props} setChosenDate={onDateSelected} chosenDate={chosenDate}/>}
         </Stack.Screen>
 
       <Stack.Screen
@@ -200,9 +227,9 @@ function MyStack() {
         {props => <Home {...props}/>}
       </Stack.Screen>
 
-
-
-
+      <Stack.Screen  options={{headerShown: false}}  name="Loading" >
+        {props => <LoadingScreen {...props} done={loadingStatus}/>}
+      </Stack.Screen>
 
       <Stack.Screen
       name="UploadOption"

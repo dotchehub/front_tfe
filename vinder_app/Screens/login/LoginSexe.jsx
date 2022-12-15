@@ -5,9 +5,18 @@ import CustomButton from './CustomButton';
 
 const LoginSexe = ({ navigation,onChangeSexe })=>{
    const [sexe,setSexe] = useState('');
-   
+   const [validF,setValidF] = useState(false);
+   const [validH,setValidH] = useState(false);
+
   const sexeHandler = (mySexe)=>{
     onChangeSexe(mySexe);
+    if(mySexe=='F'){
+      setValidF(true);
+      setValidH(false);
+    }else{
+      setValidH(true);
+      setValidF(false);
+    }
     navigation.navigate('LokingFor')
   }
 
@@ -16,14 +25,14 @@ const LoginSexe = ({ navigation,onChangeSexe })=>{
     <View style={styles.container}>
 
       <Text style={{fontWeight:"bold",fontSize:30,marginBotton:90, color:'#A5A5A5'}}> Mon Sexe : </Text>
-        <TouchableOpacity style={styles.button}
+        <TouchableOpacity style={validF ? styles.buttonIn : styles.button}
          onPress={()=>{sexeHandler('F')}}>
-            <Text style={styles.inputStyle}>FEMME</Text>
+            <Text style={validF ? styles.inputStyleIn : styles.inputStyle}>FEMME</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}
+        <TouchableOpacity style={validH ? styles.buttonIn : styles.button}
          onPress={()=>{sexeHandler('M')}}>
-            <Text style={styles.inputStyle}>HOMME</Text>
+            <Text style={validH ? styles.inputStyleIn : styles.inputStyle}>HOMME</Text>
         </TouchableOpacity>
 
       <StatusBar style="auto" />
