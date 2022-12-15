@@ -19,12 +19,12 @@ const Chat = () => {
   const [rooms, setRooms] = useState([]);
 
   //On doit le set via async storage
-  const [user, setUser] = useState(10);
+  const [user, setUser] = useState(28);
   //👇🏻 Runs when the component mounts
   //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch("https://vinderbe.azurewebsites.net/messages/matchs/10", options)
+      fetch("https://vinderbe.azurewebsites.net/messages/matchs/28", options)
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));

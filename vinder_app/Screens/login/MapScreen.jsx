@@ -22,7 +22,29 @@ const MapScreen = ()=> {
           }}
           >
           <Callout>
-            <Text>Moi</Text>
+            <Text>Daniel</Text>
+          </Callout>
+        </Marker>
+
+        <Marker
+          coordinate={{
+            latitude: 50.834190,
+            longitude: 4.392870,
+          }}
+          >
+          <Callout>
+            <Text>Rubain</Text>
+          </Callout>
+        </Marker>
+
+        <Marker
+          coordinate={{
+            latitude: 50.884570,
+            longitude: 4.319090,
+          }}
+          >
+          <Callout>
+            <Text>Rubain</Text>
           </Callout>
         </Marker>
       </MapView>
