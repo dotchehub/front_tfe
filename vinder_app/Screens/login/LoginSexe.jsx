@@ -32,7 +32,7 @@ const LoginSexe = ({ navigation,onChangeSexe })=>{
 
         <TouchableOpacity style={validH ? styles.buttonIn : styles.button}
          onPress={()=>{sexeHandler('M')}}>
-            <Text style={validH ? styles.inputStyleIn : styles.inputStyle}>HOMME</Text>
+            <Text style={validH ? styles.inputStyleIn : styles.inputStyle}x>HOMME</Text>
         </TouchableOpacity>
 
       <StatusBar style="auto" />

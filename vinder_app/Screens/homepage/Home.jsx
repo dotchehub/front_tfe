@@ -9,9 +9,11 @@ import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import SwipperScreen from '../swipper/SwipperScreen'
 import ChatNavigator  from '../messagerie/ChatNavigator'
 import Settings from './Settings';
+import ModifyProfileScreen from './profile/ModifyProfileScreen';
 import axios from 'axios';
 const Tab = createBottomTabNavigator();
 const logo = require('../../images/vinder_logo.png');
+
 
 
 const Home =()=> {
@@ -51,7 +53,7 @@ const Home =()=> {
 
             <Tab.Screen
               name="Profil"
-              component={Settings} options={{
+              component={ModifyProfileScreen} options={{
               tabBarIcon: ({ color, size }) => (
                <MaterialCommunityIcons name="account" size={24} color="black" />
              ),
