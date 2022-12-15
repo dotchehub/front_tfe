@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Myapp",
-    "slug": "Myapp",
+    "slug": "vinder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "73ffd7fd-4429-4fe5-bfcd-ed2b72eaa2c0"
+      }
+    },
+    "owner": "snackmina"
   }
 }
