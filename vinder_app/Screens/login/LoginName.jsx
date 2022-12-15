@@ -21,8 +21,8 @@ const LoginName = ({ navigation,name,setName })=>{
 
     //navigation.navigate('NotLoggedScreen');
     if(valid){
-        navigation.navigate('Birthday');
-        //navigation.navigate('HomeScreen');
+        //navigation.navigate('Birthday');
+        navigation.navigate('HomeScreen');
     }else{
       setMessageError("Entrez un pénom valide");
     }

@@ -6,7 +6,7 @@ const likeAUser = async (me_id, likedUserId) => {
   };
 
   const response = await fetch(
-    `http://192.168.0.14:3000/users/addLike/${me_id}/${likedUserId}`,
+    `https://vinderbe.azurewebsites.net/users/addLike/${me_id}/${likedUserId}`,
 
     requestOptions
   );
@@ -29,7 +29,7 @@ const dislikeUser = async (me_id, dislikedUserId) => {
   };
 
   const response = await fetch(
-    "http://192.168.0.14:3000/users/dislike",
+    "https://vinderbe.azurewebsites.net/users/dislike",
 
     requestOptions
   );
