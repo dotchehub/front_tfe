@@ -99,7 +99,7 @@ const  NotLoggedScreen = ({navigation,setName}) =>{
                 source={require("../../images/register_logo.png")}
               />
               <View style={styles.box_txt_connection}>
-                <Text style={styles.button_text}>Connexion via un numéro</Text>
+                <Text style={styles.button_text}>Créer un compte vinder</Text>
               </View>
             </TouchableOpacity>
             <Text style={{ color: "white",fontSize:10,marginTop:20,paddingLeft:10,paddingRight:10}}>

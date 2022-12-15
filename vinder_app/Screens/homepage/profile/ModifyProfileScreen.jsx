@@ -20,6 +20,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const ModifyProfileScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({});
+  const [userImages,setUserImages] = useState([]);
   const [valid, setValid] = useState(false);
   const [data, setData] = useState(false);
   const [profileImg, setProfileImg] = useState("");
@@ -35,6 +36,18 @@ const ModifyProfileScreen = ({ navigation }) => {
       console.log("url profile " + profile);
 
       let path = "https://vinderbe.azurewebsites.net/users/" + value;
+      let path2 = "https://vinderbe.azurewebsites.net/users/images/" + value;
+      axios
+        .get(path2)
+        .then(function (response) {
+          console.log("PROFILE IMAGES :");
+          console.log(response.data);
+          setUserImages(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
       axios
         .get(path)
         .then(function (response) {
@@ -73,17 +86,17 @@ const ModifyProfileScreen = ({ navigation }) => {
           </Text>
         </View>
         <View style={styles.imgBox}>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>0 ? userImages[0].url :"d" }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>1? userImages[1].url :"d" }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>2? userImages[1].url :"d"  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>3? userImages[1].url :"d" }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>4? userImages[1].url :"d" }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
-        <ImageBackground  source={{ uri: profileImg  }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
+        <ImageBackground  source={{ uri: userImages.length>5? userImages[1].url :"d" }} resizeMode="cover" style={[styles.image,{  height:100,width:windowWidth/5 }]}>
         </ImageBackground>
 
         </View>
@@ -134,7 +147,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   image_profile: {
-    height: 80,
+    height: 90,
+    width:90,
     borderRadius: 50,
     overflow: "hidden",
     justifyContent: "center",
