@@ -8,7 +8,7 @@ import socket from "../../utils/socket";
 const SwipperScreen = ({navigation}) => {
   //Changer pour choper depuis l'asyncstorage
   const me = {
-    id:10,
+    id:20,
     firstname:"mehdi",
     description:"that's my description BTW",
     images : [
