@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useEffect, useId } from "react";
 import { View, TextInput, Text, FlatList, Pressable } from "react-native";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import MessageComponent from "./MessageComponent";
 import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";
@@ -16,7 +16,7 @@ const Messaging = ({ route, navigation }) => {
   const [message, setMessage] = useState("");
 
   //A CHANGER POUR CHOPER LE BON USERNAME
-  const [user, setUser] = useState(28);
+  const [user, setUser] = useState();
 
   // This function gets the username saved on AsyncStorage
 
@@ -31,11 +31,11 @@ const Messaging = ({ route, navigation }) => {
       console.error("Error while loading username!");
     }
   };
-
   // This runs only initial mount
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: firstname });
+    getUsername();
     if (id1 == undefined) {
       socket.emit("findRoom", user + "_" + id2);
       console.log("emit findroom " + user + "_" + id2);

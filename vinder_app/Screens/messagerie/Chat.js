@@ -7,6 +7,7 @@ import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";
 import Messaging from "./Messaging";
 import { createStackNavigator } from "@react-navigation/stack";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 const options = {
   method: "GET",
@@ -19,12 +20,28 @@ const Chat = () => {
   const [rooms, setRooms] = useState([]);
 
   //On doit le set via async storage
-  const [user, setUser] = useState(28);
+  const [user, setUser] = useState();
+
+  const getUsername = async () => {
+    try {
+      const value = await AsyncStorage.getItem("id");
+
+      if (value !== null) {
+        setUser(value);
+      }
+    } catch (e) {
+      console.error("Error while loading id!");
+    }
+  };
   //👇🏻 Runs when the component mounts
   //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
+    getUsername();
     function fetchGroups() {
-      fetch("https://vinderbe.azurewebsites.net/messages/matchs/28", options)
+      fetch(
+        "https://vinderbe.azurewebsites.net/messages/matchs/" + user,
+        options
+      )
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));

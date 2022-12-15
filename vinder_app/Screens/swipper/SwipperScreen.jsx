@@ -4,11 +4,29 @@ import SwipeableCard from "./SwipeableCard";
 import MatchScreen from "./MatchScreen";
 import { likeAUser,dislikeUser } from "../../utils/api";
 import socket from "../../utils/socket";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
+
+
 
 const SwipperScreen = ({navigation}) => {
+
+
+const [meId, setMeID] = useState();
+  
+const getUsername = async () => {
+  try {
+    const value = await AsyncStorage.getItem("id");
+
+    if (value !== null) {
+      setMeID(value);
+    }
+  } catch (e) {
+    console.error("Error while loading id!");
+  }
+};
   //Changer pour choper depuis l'asyncstorage
   const me = {
-    id:28,
+    id: meId,
     firstname:"mehdi",
     description:"that's my description BTW",
     images : [
@@ -18,6 +36,7 @@ const SwipperScreen = ({navigation}) => {
   }
 
   useLayoutEffect(() => {
+    getUsername();
     function fetchProfiles() {
       fetch(`https://vinderbe.azurewebsites.net/users/userstolike/${me.id}`).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
       .catch((err) => console.log(err))
