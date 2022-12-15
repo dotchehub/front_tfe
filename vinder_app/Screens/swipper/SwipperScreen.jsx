@@ -4,7 +4,7 @@ import SwipeableCard from "./SwipeableCard";
 import MatchScreen from "./MatchScreen";
 import { likeAUser,dislikeUser } from "../../utils/api";
 import socket from "../../utils/socket";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 
 
@@ -18,7 +18,7 @@ const getUsername = async () => {
     const value = await AsyncStorage.getItem("id");
 
     if (value !== null) {
-      return value;
+      setMeID(value);
     }
   } catch (e) {
     console.error("Error while loading id!");

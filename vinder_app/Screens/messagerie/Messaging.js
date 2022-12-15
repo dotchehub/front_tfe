@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useEffect, useId } from "react";
 import { View, TextInput, Text, FlatList, Pressable } from "react-native";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import MessageComponent from "./MessageComponent";
 import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";
@@ -16,7 +16,7 @@ const Messaging = ({ route, navigation }) => {
   const [message, setMessage] = useState("");
 
   //A CHANGER POUR CHOPER LE BON USERNAME
-  const [user, setUser] = useState(20);
+  const [user, setUser] = useState();
 
   // This function gets the username saved on AsyncStorage
 
