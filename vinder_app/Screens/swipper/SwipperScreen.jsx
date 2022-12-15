@@ -19,7 +19,7 @@ const SwipperScreen = ({navigation}) => {
 
   useLayoutEffect(() => {
     function fetchProfiles() {
-      fetch(`http://192.168.0.14:3000/users/userstolike/${me.id}`).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+      fetch(`https://vinderbe.azurewebsites.net/users/userstolike/${me.id}`).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
       .catch((err) => console.log(err))
      
     }

@@ -1,3 +1,3 @@
 import { io } from "socket.io-client";
-const socket = io.connect("http://192.168.0.14:3000");
+const socket = io.connect("https://vinderbe.azurewebsites.net");
 export default socket;

@@ -24,7 +24,7 @@ const Chat = () => {
   //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch("http://192.168.0.14:3000/messages/matchs/10", options)
+      fetch("https://vinderbe.azurewebsites.net/messages/matchs/10", options)
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));
