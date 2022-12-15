@@ -7,17 +7,18 @@ import {
   Image,
 } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 
-const MatchScreen = ({navigation,profile,liked}) => {
+const MatchScreen = ({navigation,matchProfile,liked, myProfile}) => {
+    const navigation1 = useNavigation();
 
     const handleContinueClick = () => {
       liked();
     }
     const handleNavigateToMessage = () => {
-      navigation.navigate("Messaging", {
-        id: profile.id,
-    });
+      navigation1.navigate("Message")
+    
     }
 
     return (
@@ -29,7 +30,7 @@ const MatchScreen = ({navigation,profile,liked}) => {
                                   {/* CHANGE QUIDAM IMG BY LOCALSTORAGE IMG  */}
         <Image style={styles.matched_images} source={require("../../images/quidam.jpg")}>
         </Image>
-        <Image style={styles.matched_images} source={{uri : profile.images[0]}}>
+        <Image style={styles.matched_images} source={{uri : matchProfile.images[0]}}>
         </Image>
         </View>
         <View style={{ justifyContent:"center",alignItems:"center"}}>

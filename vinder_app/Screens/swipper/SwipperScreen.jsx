@@ -3,10 +3,12 @@ import { StyleSheet, View, Text } from "react-native";
 import SwipeableCard from "./SwipeableCard";
 import MatchScreen from "./MatchScreen";
 import { likeAUser,dislikeUser } from "../../utils/api";
+import socket from "../../utils/socket";
 
 const SwipperScreen = ({navigation}) => {
+  //Changer pour choper depuis l'asyncstorage
   const me = {
-    id:1,
+    id:10,
     firstname:"mehdi",
     description:"that's my description BTW",
     images : [
@@ -45,7 +47,13 @@ const SwipperScreen = ({navigation}) => {
     if (lastSwipDirection === "Right") {  
       //check if it's a match between the 2 person if yes insert new match
       if (await likeAUser(me.id, profile.id)){
+        //Create the chat room witj id : me.id_profile.id
+        socket.emit("createRoom", me.id, profile.id, profile.firstname);
+        console.log("we created room" + me.id + " --- " + profile.id);
+        //Emit event that we matched with someone and he needs to update is ChatRooms
+        socket.emit("roomList")
         setNewMatch(true);
+    
       }
     } else {
       // insert in dislike table
@@ -58,13 +66,15 @@ const SwipperScreen = ({navigation}) => {
     lastSwipDirection = swip;
   };
 
-  return (
+
+  return ( 
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         {match ? (
           <MatchScreen
           navigation={navigation}
-            profile={lastItemSwiped}
+            matchProfile={lastItemSwiped}
+            myProfile = {me.id}
             liked={() => setNewMatch(false)}
           />
         ) : (

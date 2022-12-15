@@ -5,7 +5,6 @@ import { useState, useLayoutEffect, useEffect } from "react";
 import ChatComponent from "./ChatComponent";
 import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";
-import Modal from "./Modal";
 import Messaging from "./Messaging";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -18,20 +17,27 @@ const Chat = () => {
   const [visible, setVisible] = useState(false);
   //👇🏻 Dummy list of rooms
   const [rooms, setRooms] = useState([]);
+
+  //On doit le set via async storage
+  const [user, setUser] = useState(10);
   //👇🏻 Runs when the component mounts
+  //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch("https://vinderbe.azurewebsites.net/messages/api", options)
+      fetch("http://192.168.0.14:3000/messages/matchs/10", options)
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));
     }
+    console.log("rooms ", rooms);
     return fetchGroups();
   }, []);
 
   //Runs whenever there is new trigger from the backend
   useEffect(() => {
     socket.on("roomsList", (rooms) => {
+      console.log("someone matched with me rerender rooms");
+      console.log("we fetched data :", rooms);
       setRooms(rooms);
     });
   }, [socket]);
@@ -42,8 +48,8 @@ const Chat = () => {
         <View style={styles.chatheader}>
           <Text style={styles.chatheading}>Chats</Text>
 
-          {/* Displays the Modal component when clicked */}
-          <Pressable onPress={() => setVisible(true)}>
+          {/* 👇🏻 Logs "ButtonPressed" to the console when the icon is clicked */}
+          <Pressable onPress={() => console.log("Button Pressed!")}>
             <Feather name="edit" size={24} color="green" />
           </Pressable>
         </View>
@@ -58,18 +64,10 @@ const Chat = () => {
           />
         ) : (
           <View style={styles.chatemptyContainer}>
-            <Text style={styles.chatemptyText}>No rooms created!</Text>
-            <Text>Click the icon above to create a Chat room</Text>
+            <Text style={styles.chatemptyText}>No Matchs Yet!</Text>
           </View>
         )}
-        {/*
-                Pass setVisible as prop in order to toggle
-                the display within the Modal component.
-            */}
-        {visible ? <Modal setVisible={setVisible} /> : ""}
       </View>
-
-      {visible ? <Modal setVisible={setVisible} /> : ""}
     </SafeAreaView>
   );
 };

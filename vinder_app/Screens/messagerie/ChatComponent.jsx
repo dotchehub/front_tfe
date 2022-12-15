@@ -8,7 +8,7 @@ import socket from "../../utils/socket"
 const ChatComponent = ({ item }) => {
     const navigation = useNavigation();
     const [messages, setMessages] = useState({});
-
+    
     //👇🏻 Retrieves the last message in the array from the item prop
     useLayoutEffect(() => {
         setMessages(item.messages[item.messages.length - 1]);
@@ -16,10 +16,12 @@ const ChatComponent = ({ item }) => {
 
     ///👇🏻 Navigates to the Messaging screen
     const handleNavigation = () => {
-        console.log("navigated to " +  item.id + " " + item.roomName)
+        console.log("item : " , item)
+        console.log("navigated to match : " + item.id_user2 + item.id_user );
         navigation.navigate("Messaging", {
-            id: item.id,
-            name: item.roomName,
+            id1: item.id_user2,
+            id2: item.id_user,
+            firstname : item.firstname
         });
     };
 
@@ -37,7 +39,7 @@ const ChatComponent = ({ item }) => {
                     <Text style={styles.cusername}>{item.name}</Text>
 
                     <Text style={styles.cmessage}>
-                        {messages?.text ? messages.text : "Tap to start chatting"}
+                        {messages?.text ? messages.text : item.firstname}
                     </Text>
                 </View>
                 <View>
