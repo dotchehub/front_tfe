@@ -29,6 +29,7 @@ const SwipeableCard = ({ item, removeCard, swipedDirection }) => {
   const [dislike, setDislike] = useState(false);
   const [counter, setCounter] = useState(0);
   const [isUpper, setIsUpper] = useState(false);
+  const actualYear = new Date().getFullYear();
 
   const [rotateCardTop, setRotateCardTop] = useState(
     xPosition.interpolate({
@@ -214,12 +215,8 @@ const SwipeableCard = ({ item, removeCard, swipedDirection }) => {
       </View>
       <Image style={styles.cardStyle} source={{ uri : item.images[counter]}}></Image>
       <View style={styles.profile_name}>
-        <Text style={{ fontSize: 40, color: "white" }}>{item.firstname}</Text>
+        <Text style={{ fontSize: 40, color: "white" }}>{item.firstname + ' ' + (actualYear - parseInt(item.birthdate.substr(0, 4)))}</Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image
-            style={{ height: 20, width: 15, marginRight: 10 }}
-            source={require("../../images/localisation_logo.png")}
-          ></Image>
           <Text style={{ fontSize: 20, color: "white" }}>
             {item.description}
           </Text>

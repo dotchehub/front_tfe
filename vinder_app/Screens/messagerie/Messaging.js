@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useEffect, useId } from "react";
 import { View, TextInput, Text, FlatList, Pressable } from "react-native";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 import MessageComponent from "./MessageComponent";
 import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";

@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 import { EAzureBlobStorageFile } from "react-native-azure-blob-storage";
 
 import LoginName from "./LoginName";

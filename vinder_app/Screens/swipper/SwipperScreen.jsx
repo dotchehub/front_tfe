@@ -6,10 +6,7 @@ import { likeAUser,dislikeUser } from "../../utils/api";
 import socket from "../../utils/socket";
 import { AsyncStorage } from "react-native";
 
-
-
 const SwipperScreen = ({navigation}) => {
-
 
 const [meId, setMeID] = useState();
 
@@ -56,10 +53,10 @@ const getUsername = async () => {
     }
     if (lastSwipDirection === "Right") {
       //check if it's a match between the 2 person if yes insert new match
-      if (await likeAUser(me.id, profile.id)){
-        //Create the chat room witj id : me.id_profile.id
-        socket.emit("createRoom", me.id, profile.id, profile.firstname);
-        console.log("we created room" + me.id + " --- " + profile.id);
+      if (await likeAUser(meId, profile.id)){
+        //Create the chat room witj id : meId_profile.id
+        socket.emit("createRoom", meId, profile.id, profile.firstname);
+        console.log("we created room" + meId + " --- " + profile.id);
         //Emit event that we matched with someone and he needs to update is ChatRooms
         socket.emit("roomList")
         setNewMatch(true);
@@ -67,7 +64,7 @@ const getUsername = async () => {
       }
     } else {
       // insert in dislike table
-      await dislikeUser(me.id, profile.id)
+      await dislikeUser(meId, profile.id)
     }
   };
 
@@ -84,7 +81,7 @@ const getUsername = async () => {
           <MatchScreen
           navigation={navigation}
             matchProfile={lastItemSwiped}
-            myProfile = {me.id}
+            myProfile = {meId}
             liked={() => setNewMatch(false)}
           />
         ) : (

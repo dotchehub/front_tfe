@@ -7,7 +7,7 @@ import { styles } from "../../utils/styles";
 import socket from "../../utils/socket";
 import Messaging from "./Messaging";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 
 const options = {
   method: "GET",
@@ -23,35 +23,45 @@ const Chat = () => {
   const [user, setUser] = useState();
 
   const getUsername = async () => {
-    try {
-      const value = await AsyncStorage.getItem("id");
 
+    try {
+  
+      const value = await AsyncStorage.getItem("id");
+  
+      console.log("IDDDDDD :" +value)
+  
       if (value !== null) {
-        setUser(value);
+  
+        setMeID(value);
+  
         return value;
+  
       }
+  
+  
+  
     } catch (e) {
-      console.error("Error while loading id!");
+  
+      console.error(e);
+  
     }
+  
   };
   //👇🏻 Runs when the component mounts
   //Fetching the profile of all matches he's had
   useLayoutEffect(() => {
-    function fetchGroups() {
-      getUsername()
-        .then((id) =>
-          fetch(
-            "https://vinderbe.azurewebsites.net/messages/matchs/" + id,
-            options
-          )
-        )
-        .then((res) => res.json())
-        .then((data) => setRooms(data))
-        .catch((err) => console.error(err));
+
+    function fetchProfiles() {
+
+      (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/messages/matchs/" + id)).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+
+      .catch((err) => console.log(err))
+
     }
-    console.log("rooms ", rooms);
-    return fetchGroups();
-  }, []);
+
+    return fetchProfiles();
+
+  },[]);
 
   //Runs whenever there is new trigger from the backend
   useEffect(() => {
