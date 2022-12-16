@@ -32,7 +32,7 @@ const Chat = () => {
   
       if (value !== null) {
   
-        setMeID(value);
+        setUser(value);
   
         return value;
   

@@ -23,15 +23,6 @@ const getUsername = async () => {
     console.error(e);
   }
 };
-  //Changer pour choper depuis l'asyncstorage
-
-  useLayoutEffect(() => {
-    function fetchProfiles() {
-      (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/users/userstolike/"+id)).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
-      .catch((err) => console.log(err))
-    }
-    return fetchProfiles();
-  },[]);
 
   const [noMoreCard, setNoMoreCard] = useState(false);
   const [sampleCardArray, setSampleCardArray] = useState([]);
@@ -40,6 +31,16 @@ const getUsername = async () => {
 
   const [lastItemSwiped, setLastItemSwiped] = useState();
   let lastSwipDirection = "";
+
+  //Changer pour choper depuis l'asyncstorage
+
+    useLayoutEffect(() => {
+      function fetchProfiles() {
+        (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/users/userstolike/"+id)).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+        .catch((err) => console.log(err))
+      }
+      return fetchProfiles();
+    },[]);
 
   const removeCard = async(profile) => {
     setLastItemSwiped(profile);
