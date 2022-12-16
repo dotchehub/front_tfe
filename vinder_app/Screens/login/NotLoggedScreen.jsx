@@ -21,6 +21,7 @@ const  NotLoggedScreen = ({navigation,setName}) =>{
   });
 
   const handleGoogleCLick = async () => {
+     //AsyncStorage.clear();
     const value = await AsyncStorage.getItem("id");
     if(value){
       navigation.navigate("HomeScreen");

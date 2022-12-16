@@ -25,27 +25,27 @@ const Chat = () => {
   const getUsername = async () => {
 
     try {
-  
+
       const value = await AsyncStorage.getItem("id");
-  
+
       console.log("IDDDDDD :" +value)
-  
+
       if (value !== null) {
-  
+
         setUser(value);
-  
+
         return value;
-  
+
       }
-  
-  
-  
+
+
+
     } catch (e) {
-  
+
       console.error(e);
-  
+
     }
-  
+
   };
   //👇🏻 Runs when the component mounts
   //Fetching the profile of all matches he's had
@@ -53,7 +53,7 @@ const Chat = () => {
 
     function fetchProfiles() {
 
-      (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/messages/matchs/" + id)).then((res) => res.json()).then((data) => {setSampleCardArray(data.reverse()); return data;}).then( (data) => data.length == 0 ? setNoMoreCard(true): "")
+      (getUsername()).then((id)=>fetch("https://vinderbe.azurewebsites.net/messages/matchs/" + id)).then((res) => res.json()).then((data) => setRooms(data))
 
       .catch((err) => console.log(err))
 
