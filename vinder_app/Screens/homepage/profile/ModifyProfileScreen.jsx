@@ -24,9 +24,13 @@ const ModifyProfileScreen = ({ navigation }) => {
   const [valid, setValid] = useState(false);
   const [data, setData] = useState(false);
   const [profileImg, setProfileImg] = useState("");
+  const [about,setAbout] = useState("");
+  const [number,setNumber] = useState("");
+  const [messageError,setMessageError] = React.useState("");
 
   useEffect(() => {
     //let idUser = await _retrieveData();
+    
     async function fetchData() {
       const value = await AsyncStorage.getItem("id");
       const profile = await AsyncStorage.getItem("profileImage");
@@ -51,9 +55,11 @@ const ModifyProfileScreen = ({ navigation }) => {
       axios
         .get(path)
         .then(function (response) {
-          console.log("USER Birthday : " + response.data.birthdate);
+          
           console.log(response.data);
           setUserInfo(response.data[0]);
+          setAbout(userInfo.description);
+          setNumber(userInfo.phone_number);
           setData(true);
         })
         .catch(function (error) {
@@ -62,6 +68,22 @@ const ModifyProfileScreen = ({ navigation }) => {
     }
     fetchData();
   }, []);
+
+  const setProfile =  async ()=>{
+    let path = "https://vinderbe.azurewebsites.net/users/" +userInfo.id_user;
+    const res = await axios.put(path,
+       {
+        firstname: userInfo.firstname,
+        url:userInfo.url_profile,
+        choice:userInfo.choice,
+        description:about,
+        number:number
+       });
+       setMessageError("vos informations ont été sauvé.")
+       setTimeout(() => {
+        setMessageError("");
+      }, 2000);
+  }
 
   return (
     <View style={styles.container1}>
@@ -102,18 +124,17 @@ const ModifyProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.container}>
-          <InputModifyProfileAboutMe label={"À propos de moi"} />
-          <InputModifyProfile label={"Entreprise"} isMale={false} />
-          <InputModifyProfile label={"Sexe"} isMale={true} />
-          <InputModifyProfile label={"numero de télephone"} isMale={false} />
+          <InputModifyProfileAboutMe label={"À propos de moi"} value = {about} onChange={setAbout} />
+          <InputModifyProfile label={"numero de télephone"} isMale={false} value = {number} onChange={setNumber} />
           <InputModifyProfile label={"Entreprise"} isMale={false} />
         </View>
       </ScrollView>
       <View style={styles.buttonValid}>
+        <Text style={{color:'#35E3FF',alignSelf:'center'}}>{messageError}</Text>
         <TouchableOpacity
           style={styles.buttonIn}
           onPress={() => {
-            sexeHandler("F");
+            setProfile();
           }}
         >
           <Text style={styles.inputStyleIn}>SAUVER</Text>

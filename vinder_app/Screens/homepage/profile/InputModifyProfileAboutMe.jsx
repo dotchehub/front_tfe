@@ -1,6 +1,6 @@
 import { View, StyleSheet, TextInput, Text } from "react-native";
 
-const InputModifyProfileAboutMe = ({ label }) => {
+const InputModifyProfileAboutMe = ({ label,value,onChange }) => {
   return (
     <View style={styles.container}>
       <View style={styles.label_container}>
@@ -10,6 +10,8 @@ const InputModifyProfileAboutMe = ({ label }) => {
         multiline={true}
         placeholder={`${label}`}
         style={styles.input}
+        value={value}
+        onChangeText={onChange}
       ></TextInput>
     </View>
   );

@@ -1,6 +1,6 @@
 import { View, StyleSheet, TextInput, Text } from "react-native";
 
-const InputModifyProfile = ({ label, isMale }) => {
+const InputModifyProfile = ({ label, isMale,value,onChange }) => {
   return (
     <View style={styles.container}>
       <View style={styles.label_container}>
@@ -12,6 +12,8 @@ const InputModifyProfile = ({ label, isMale }) => {
           `Choisissez ${isMale ? "un " : "une "}` + `${label.toLowerCase()}`
         }
         style={styles.input}
+        value={value}
+        onChangeText={onChange}
       ></TextInput>
     </View>
   );
